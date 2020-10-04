@@ -1,4 +1,5 @@
 from fastapi import FastAPI, File, UploadFile, Form
+from fastapi.middleware.cors import CORSMiddleware
 from db_models.mongo_setup import global_init
 from db_models.models.post_model import Posts
 from db_models.models.user_model import UserModel
@@ -10,6 +11,19 @@ import base64
 
 
 app = FastAPI()
+
+origins = [
+    "http://localhost:3000"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 global_init()
 
 for user in UserModel.objects:
